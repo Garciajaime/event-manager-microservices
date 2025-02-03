@@ -36,10 +36,49 @@ while True:
             with open("login.txt","w", encoding="utf-8") as loginFile:
                 json.dump(loginData,loginFile, indent=4)  # update json object in login file
     if loginVerified is True:
-        print()
-        print()
-        print('Congratulations you are logged in!')
-        print()
-        print()
+        # Enter the home page
+        home_page_statement = '''
+        Hello and welcome to the Walla Walla,WA event app!
+        Here you can view upcoming events or create your own!
+        '''
+        print(textwrap.dedent(home_page_statement))
+        view_event_input = input('Would you like to view upcoming events? (y/n): ')
+        create_event_input = input('Would you like to create an event? (y/n): ')
+        if create_event_input == 'y':
+            # Enter the Event Creation Page
+            event_statement = '''
+            Hello and Welcome to the event creation page. 
+            Here you can create events and add them to our logs. Other users
+            will then be able to view/attend your event!
+            '''
+            print(textwrap.dedent(event_statement))
+            template_event_response = input('Would you like to use an event from our list? (y/n): ')
+            if template_event_response == 'y':     # use template event
+                template_event_list = '''
+                Which event would you like? (choose number)
+                1. Concert
+                2. Eating Contest
+                3. Movie in the Park
+                '''
+                print(textwrap.dedent(template_event_list))
+                template_events = { 1: 'Concert',
+                                    2: 'Eating Contest',
+                                    3: 'Movie in the Park'
+
+                                    }
+                event_input = int(input())
+                chosen_event = template_events[event_input]
+                print('You chose to create this event: ', chosen_event)
+            else:
+                chosen_event = input('What type of event will this be?: ')
+                event_date = input('When will the event be? (enter date): ')
+                print('Please add a description:')
+                event_description = input()
+
+
+
+
+
+
 
 
