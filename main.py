@@ -1,5 +1,6 @@
 import json
 import textwrap
+import pprint
 
 while True:
     loginVerified = False
@@ -42,7 +43,6 @@ while True:
         Here you can view upcoming events or create your own!
         '''
         print(textwrap.dedent(home_page_statement))
-        view_event_input = input('Would you like to view upcoming events? (y/n): ')
         create_event_input = input('Would you like to create an event? (y/n): ')
         if create_event_input == 'y':
             # Enter the Event Creation Page
@@ -69,11 +69,65 @@ while True:
                 event_input = int(input())
                 chosen_event = template_events[event_input]
                 print('You chose to create this event: ', chosen_event)
-            else:
+            if template_event_response == 'n':              # create custom event
                 chosen_event = input('What type of event will this be?: ')
-                event_date = input('When will the event be? (enter date): ')
-                print('Please add a description:')
-                event_description = input()
+            # enter event details
+            event_date = input('When will the event be? (enter date): ')
+            print('Please add a description:')
+            event_description = input()
+            # create event object
+            eventObj = {'name': chosen_event,
+                        'date': event_date,
+                        'description': event_description
+
+            }
+            # add created event to event log
+            with open('events.txt','r',encoding='utf-8') as eventFile:
+                eventData = json.load(eventFile)
+                eventData[chosen_event] = eventObj      # event name is key
+            with open('events.txt','w',encoding='utf-8') as eventFile:
+                json.dump(eventData,eventFile,indent=4)
+        # asking user if they want to view events
+        view_event_input = input('Would you like to view upcoming events? (y/n): ')
+        if view_event_input == 'y':
+            # enter the view events page
+            view_event_statement = '''
+            Welcome to the events viewing page.
+            '''
+            print(textwrap.dedent(view_event_statement))
+            view_little = input('Would you like to only see the name and date of the events? (y/n): ')
+            if view_little == 'n':
+                view_big = input('Would you like to see all information regarding the events? (y/n): ')
+                if view_big == 'y':
+                    with open('events.txt', 'r', encoding='utf-8') as eventFile:
+                        eventData = json.load(eventFile)
+                    print()
+                    for eventName in eventData:                 # print out events
+                        eventDict = eventData[eventName]
+                        print('Event: ', eventDict['name'])
+                        print('Date:', eventDict['date'])
+                        print('Description: ', eventDict['description'])
+                        print()
+
+            elif view_little == 'y':
+                with open('events.txt', 'r', encoding='utf-8') as eventFile:
+                    eventData = json.load(eventFile)
+                print()
+                for eventName in eventData:             # print out only name and date
+                    eventDict = eventData[eventName]
+                    print('Event: ', eventDict['name'])
+                    print('Date:', eventDict['date'])
+                    print()
+
+
+
+
+
+
+
+
+
+
 
 
 
