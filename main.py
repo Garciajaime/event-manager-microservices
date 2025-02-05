@@ -37,87 +37,101 @@ while True:
             with open("login.txt","w", encoding="utf-8") as loginFile:
                 json.dump(loginData,loginFile, indent=4)  # update json object in login file
     if loginVerified is True:
-        # Enter the home page
-        home_page_statement = '''
-        Hello and welcome to the Walla Walla,WA event app!
-        Here you can view upcoming events or create your own!
-        '''
-        print(textwrap.dedent(home_page_statement))
-        create_event_input = input('Would you like to create an event? (y/n): ')
-        if create_event_input == 'y':
-            # Enter the Event Creation Page
-            event_statement = '''
-            Hello and Welcome to the event creation page. 
-            Here you can create events and add them to our logs. Other users
-            will then be able to view/attend your event!
+        while True:
+            # used to return to Home page
+            goHome = False
+            # Enter the home page
+            home_page_statement = '''
+            Hello and welcome to the Walla Walla,WA event app!
+            Here you can view upcoming events or create your own!
             '''
-            print(textwrap.dedent(event_statement))
-            template_event_response = input('Would you like to use an event from our list? (y/n): ')
-            if template_event_response == 'y':     # use template event
-                template_event_list = '''
-                Which event would you like? (choose number)
-                1. Concert
-                2. Eating Contest
-                3. Movie in the Park
-                '''
-                print(textwrap.dedent(template_event_list))
-                template_events = { 1: 'Concert',
-                                    2: 'Eating Contest',
-                                    3: 'Movie in the Park'
+            print(textwrap.dedent(home_page_statement))
+            create_event_input = input('Would you like to create an event? (y/n): ')
+            if create_event_input == 'y':
+                while goHome is False:
+                    # Enter the Event Creation Page
+                    event_statement = '''
+                    Hello and Welcome to the event creation page. 
+                    Here you can create events and add them to our logs. Other users
+                    will then be able to view/attend your event!
+                    '''
+                    print(textwrap.dedent(event_statement))
+                    template_event_response = input('Would you like to use an event from our list? (y/n): ')
+                    if template_event_response == 'y':     # use template event
+                        template_event_list = '''
+                        Which event would you like? (choose number)
+                        1. Concert
+                        2. Eating Contest
+                        3. Movie in the Park
+                        '''
+                        print(textwrap.dedent(template_event_list))
+                        template_events = { 1: 'Concert',
+                                            2: 'Eating Contest',
+                                            3: 'Movie in the Park'
 
-                                    }
-                event_input = int(input())
-                chosen_event = template_events[event_input]
-                print('You chose to create this event: ', chosen_event)
-            if template_event_response == 'n':              # create custom event
-                chosen_event = input('What type of event will this be?: ')
-            # enter event details
-            event_date = input('When will the event be? (enter date): ')
-            print('Please add a description:')
-            event_description = input()
-            # create event object
-            eventObj = {'name': chosen_event,
-                        'date': event_date,
-                        'description': event_description
+                                            }
+                        event_input = int(input())
+                        chosen_event = template_events[event_input]
+                        print('You chose to create this event: ', chosen_event)
+                    if template_event_response == 'n':              # create custom event
+                        chosen_event = input('What type of event will this be?: ')
+                    # enter event details
+                    event_date = input('When will the event be? (enter date): ')
+                    print('Please add a description:')
+                    event_description = input()
+                    # create event object
+                    eventObj = {'name': chosen_event,
+                                'date': event_date,
+                                'description': event_description
 
-            }
-            # add created event to event log
-            with open('events.txt','r',encoding='utf-8') as eventFile:
-                eventData = json.load(eventFile)
-                eventData[chosen_event] = eventObj      # event name is key
-            with open('events.txt','w',encoding='utf-8') as eventFile:
-                json.dump(eventData,eventFile,indent=4)
-        # asking user if they want to view events
-        view_event_input = input('Would you like to view upcoming events? (y/n): ')
-        if view_event_input == 'y':
-            # enter the view events page
-            view_event_statement = '''
-            Welcome to the events viewing page.
-            '''
-            print(textwrap.dedent(view_event_statement))
-            view_little = input('Would you like to only see the name and date of the events? (y/n): ')
-            if view_little == 'n':
-                view_big = input('Would you like to see all information regarding the events? (y/n): ')
-                if view_big == 'y':
-                    with open('events.txt', 'r', encoding='utf-8') as eventFile:
+                    }
+                    # add created event to event log
+                    with open('events.txt','r',encoding='utf-8') as eventFile:
                         eventData = json.load(eventFile)
-                    print()
-                    for eventName in eventData:                 # print out events
-                        eventDict = eventData[eventName]
-                        print('Event: ', eventDict['name'])
-                        print('Date:', eventDict['date'])
-                        print('Description: ', eventDict['description'])
-                        print()
+                        eventData[chosen_event] = eventObj      # event name is key
+                    with open('events.txt','w',encoding='utf-8') as eventFile:
+                        json.dump(eventData,eventFile,indent=4)
+                    # ask to return to home page
+                    returnHome = input('Return to Home Page? (y/n): ')
+                    if returnHome == 'y':
+                        goHome = True
+            # asking user if they want to view events
+            if goHome is False:
+                view_event_input = input('Would you like to view upcoming events? (y/n): ')
+                if view_event_input == 'y':
+                    while goHome is False:
+                        # enter the view events page
+                        view_event_statement = '''
+                        Welcome to the events viewing page.
+                        '''
+                        print(textwrap.dedent(view_event_statement))
+                        view_little = input('Would you like to only see the name and date of the events? (y/n): ')
+                        if view_little == 'n':
+                            view_big = input('Would you like to see all information regarding the events? (y/n): ')
+                            if view_big == 'y':
+                                with open('events.txt', 'r', encoding='utf-8') as eventFile:
+                                    eventData = json.load(eventFile)
+                                print()
+                                for eventName in eventData:                 # print out events
+                                    eventDict = eventData[eventName]
+                                    print('Event: ', eventDict['name'])
+                                    print('Date:', eventDict['date'])
+                                    print('Description: ', eventDict['description'])
+                                    print()
 
-            elif view_little == 'y':
-                with open('events.txt', 'r', encoding='utf-8') as eventFile:
-                    eventData = json.load(eventFile)
-                print()
-                for eventName in eventData:             # print out only name and date
-                    eventDict = eventData[eventName]
-                    print('Event: ', eventDict['name'])
-                    print('Date:', eventDict['date'])
-                    print()
+                        elif view_little == 'y':
+                            with open('events.txt', 'r', encoding='utf-8') as eventFile:
+                                eventData = json.load(eventFile)
+                            print()
+                            for eventName in eventData:             # print out only name and date
+                                eventDict = eventData[eventName]
+                                print('Event: ', eventDict['name'])
+                                print('Date:', eventDict['date'])
+                                print()
+                        # ask to return to home page
+                        returnHome = input('Return to Home Page? (y/n): ')
+                        if returnHome == 'y':
+                            goHome = True
 
 
 
