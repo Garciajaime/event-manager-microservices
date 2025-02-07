@@ -46,6 +46,13 @@ while True:
             Here you can view upcoming events or create your own!
             '''
             print(textwrap.dedent(home_page_statement))
+            # help document
+            help_input = input('Want to refer to the help document before proceeding? (y/n): ')
+            if help_input == 'y':
+                with open('help document.txt','r',encoding='utf-8') as help_file:
+                    help_document = help_file.read()
+                    print(help_document)
+            # create an event
             create_event_input = input('Would you like to create an event? (y/n): ')
             if create_event_input == 'y':
                 while goHome is False:
@@ -85,12 +92,18 @@ while True:
                                 'description': event_description
 
                     }
-                    # add created event to event log
-                    with open('events.txt','r',encoding='utf-8') as eventFile:
-                        eventData = json.load(eventFile)
-                        eventData[chosen_event] = eventObj      # event name is key
-                    with open('events.txt','w',encoding='utf-8') as eventFile:
-                        json.dump(eventData,eventFile,indent=4)
+                    print('Are you sure you want to create this event?')
+                    print('Event: ',chosen_event)
+                    print('Date: ',event_date)
+                    print('Description: ',event_description)
+                    confirm_create = input('Confirm (y/n): ')
+                    if confirm_create == 'y':
+                        # add created event to event log
+                        with open('events.txt','r',encoding='utf-8') as eventFile:
+                            eventData = json.load(eventFile)
+                            eventData[chosen_event] = eventObj      # event name is key
+                        with open('events.txt','w',encoding='utf-8') as eventFile:
+                            json.dump(eventData,eventFile,indent=4)
                     # ask to return to home page
                     returnHome = input('Return to Home Page? (y/n): ')
                     if returnHome == 'y':
