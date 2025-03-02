@@ -89,7 +89,8 @@ while True:
                     # create event object
                     eventObj = {'name': chosen_event,
                                 'date': event_date,
-                                'description': event_description
+                                'description': event_description,
+                                'username': username
 
                     }
                     print('Are you sure you want to create this event?')
@@ -101,7 +102,9 @@ while True:
                         # add created event to event log
                         with open('events.txt','r',encoding='utf-8') as eventFile:
                             eventData = json.load(eventFile)
-                            eventData[chosen_event] = eventObj      # event name is key
+                            numOfEvents = len(eventData)
+                            eventObj['Event Number'] = numOfEvents + 1  # create event number
+                            eventData[chosen_event] = eventObj          # event name is key
                         with open('events.txt','w',encoding='utf-8') as eventFile:
                             json.dump(eventData,eventFile,indent=4)
                     # ask to return to home page
@@ -145,6 +148,28 @@ while True:
                         returnHome = input('Return to Home Page? (y/n): ')
                         if returnHome == 'y':
                             goHome = True
+
+                deleteEvent = input('Do you want to delete an event?')
+                if deleteEvent == 'y':
+                    while goHome is False:
+                        openingMessage = '''
+                        Hello you have entered the event deletion page.
+                        Here you can see all the events you have created and
+                        decide if you want to delete any.
+                        '''
+                        print(textwrap.dedent(openingMessage))
+                        print('Below are the events that you have created:')
+                        with open('events.txt','r',encoding='utf-8') as file:
+                            eventObjs = json.load(file)
+                            for event in eventObjs:
+                                eventUser = event['username']
+                                if eventUser == username:
+                                    print('Event: ', event['name'])
+                                    print('Date:', event['date'])
+                                    print('Description: ', event['description'])
+                                    print()
+                        break
+
 
 
 
