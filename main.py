@@ -1,6 +1,7 @@
 import json
 import textwrap
 import pprint
+import time
 
 while True:
     loginVerified = False
@@ -102,9 +103,13 @@ while True:
                         # add created event to event log
                         with open('events.txt','r',encoding='utf-8') as eventFile:
                             eventData = json.load(eventFile)
-                            numOfEvents = len(eventData)
-                            eventObj['Event Number'] = numOfEvents + 1  # create event number
-                            eventData[chosen_event] = eventObj          # event name is key
+                            # create event number
+                            keysList = list(eventData.keys())
+                            keysList = [int(num) for num in keysList]
+                            maxKey = max(keysList)
+                            eventNum = maxKey + 1
+                            eventObj['Event Number'] = eventNum
+                            eventData[eventNum] = eventObj          # event number is key
                         with open('events.txt','w',encoding='utf-8') as eventFile:
                             json.dump(eventData,eventFile,indent=4)
                     # ask to return to home page
@@ -148,8 +153,8 @@ while True:
                         returnHome = input('Return to Home Page? (y/n): ')
                         if returnHome == 'y':
                             goHome = True
-
-                deleteEvent = input('Do you want to delete an event?')
+                # enter the deletion/edit page
+                deleteEvent = input('Do you want to delete an event? (y/n): ')
                 if deleteEvent == 'y':
                     while goHome is False:
                         openingMessage = '''
@@ -158,17 +163,53 @@ while True:
                         decide if you want to delete any.
                         '''
                         print(textwrap.dedent(openingMessage))
+                        print()
                         print('Below are the events that you have created:')
-                        with open('events.txt','r',encoding='utf-8') as file:
+                        print()
+                        # make a request for a users created events
+                        with open('EventDelete.txt','w',encoding='utf-8') as delFile:
+                            reqMessage = {
+                                "Read": username
+                            }
+                            json.dump(reqMessage,delFile,indent=4)
+                        time.sleep(3)
+                        # print out all of a user's created events
+                        userEventNums = []
+                        with open('EventDelete.txt','r',encoding='utf-8') as file:
                             eventObjs = json.load(file)
                             for event in eventObjs:
-                                eventUser = event['username']
-                                if eventUser == username:
-                                    print('Event: ', event['name'])
-                                    print('Date:', event['date'])
-                                    print('Description: ', event['description'])
-                                    print()
-                        break
+                                currentNum = int(event)
+                                userEventNums.append(currentNum)    # create a list of a user's events
+                                currentEvent = eventObjs[event]
+                                print('Event Number: ', currentEvent['Event Number'])
+                                print('Event: ', currentEvent['name'])
+                                print('Date:', currentEvent['date'])
+                                print('Description: ', currentEvent['description'])
+                                print()
+                        # Delete event section
+                        print('User Event Num: ', userEventNums)
+                        requestDelete = input('Would you like to delete any of these? (y/n): ')
+                        if requestDelete == 'y':
+                            deleteNum = input('Please enter the "Event Number" of the event you want to delete: ')
+                            deleteNum = int(deleteNum)
+                            while deleteNum not in userEventNums:
+                                print('The Event Number you have entered is invalid.')
+                                deleteNum = input('Please enter the "Event Number" of the event you want to delete: ')
+                                deleteNum = int(deleteNum)
+                            confirmDelete = input(f'Are you sure you want to delete Event Number "{deleteNum}" (y/n)?: ')
+                            if confirmDelete == 'y':
+                                with open('EventDelete.txt','w',encoding='utf-8') as file:
+                                    deleteObj = {
+                                        'Delete': deleteNum
+                                    }
+                                    json.dump(deleteObj,file)
+                                print('Your event has been deleted.')
+                        # ask to return to home page
+                        returnHome = input('Return to Home Page? (y/n): ')
+                        if returnHome == 'y':
+                            goHome = True
+
+
 
 
 
