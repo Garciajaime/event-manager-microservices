@@ -164,7 +164,6 @@ while True:
                         '''
                         print(textwrap.dedent(openingMessage))
                         print()
-                        print('Below are the events that you have created:')
                         print()
                         # make a request for a users created events
                         with open('EventDelete.txt','w',encoding='utf-8') as delFile:
@@ -177,23 +176,27 @@ while True:
                         userEventNums = []
                         with open('EventDelete.txt','r',encoding='utf-8') as file:
                             eventObjs = json.load(file)
+                            viewEvents = input('Would you like to view all your events? (y/n): ')
+                            if viewEvents == 'y':
+                                viewEvents = True
+                                print('Below are the events that you have created:')
                             for event in eventObjs:
                                 currentNum = int(event)
                                 userEventNums.append(currentNum)    # create a list of a user's events
                                 currentEvent = eventObjs[event]
-                                print('Event Number: ', currentEvent['Event Number'])
-                                print('Event: ', currentEvent['name'])
-                                print('Date:', currentEvent['date'])
-                                print('Description: ', currentEvent['description'])
-                                print()
+                                if viewEvents is True:
+                                    print('Event Number: ', currentEvent['Event Number'])
+                                    print('Event: ', currentEvent['name'])
+                                    print('Date:', currentEvent['date'])
+                                    print('Description: ', currentEvent['description'])
+                                    print()
                         # Delete event section
-                        print('User Event Num: ', userEventNums)
-                        requestDelete = input('Would you like to delete any of these? (y/n): ')
+                        requestDelete = input('Would you like to delete an Event? (y/n): ')
                         if requestDelete == 'y':
                             deleteNum = input('Please enter the "Event Number" of the event you want to delete: ')
                             deleteNum = int(deleteNum)
                             while deleteNum not in userEventNums:
-                                print('The Event Number you have entered is invalid.')
+                                print('ERROR: The Event Number you have entered is invalid.')
                                 deleteNum = input('Please enter the "Event Number" of the event you want to delete: ')
                                 deleteNum = int(deleteNum)
                             confirmDelete = input(f'Are you sure you want to delete Event Number "{deleteNum}" (y/n)?: ')
