@@ -135,6 +135,7 @@ while True:
                                 print()
                                 for eventName in eventData:                 # print out events
                                     eventDict = eventData[eventName]
+                                    print('Event Number', eventDict['Event Number'])
                                     print('Event: ', eventDict['name'])
                                     print('Date:', eventDict['date'])
                                     print('Description: ', eventDict['description'])
@@ -211,6 +212,90 @@ while True:
                         returnHome = input('Return to Home Page? (y/n): ')
                         if returnHome == 'y':
                             goHome = True
+                # enter the forum page
+                enterForum = input('Would you like to enter the Forum Page (y/n): ')
+                if enterForum == 'y':
+                    while goHome is False:
+                        openingMessage = '''
+                        Welcome to the event forum page. Here you will be able to comment on
+                        any listed event.
+                        '''
+                        print(textwrap.dedent(openingMessage))
+                        print()
+                        makePost = input('Want to comment on an event? (y/n): ')
+                        if makePost == 'y':
+                            with open('events.txt', 'r', encoding='utf-8') as eventFile:
+                                eventData = json.load(eventFile)
+                            print()
+                            for eventName in eventData:             # print out only name and date
+                                eventDict = eventData[eventName]
+                                print('Event Number: ', eventDict['Event Number'])
+                                print('Event: ', eventDict['name'])
+                                print('Date:', eventDict['date'])
+                                print()
+                            eventNum = input('Which event would you like to comment on? (enter number): ')
+                            print('Go ahead a write a comment below: ')
+                            print()
+                            userComment = input()
+                            # make a post request
+                            with open('ForumReceive.txt','w',encoding='utf-8') as file:
+                                postObj = {
+                                    "Event Number": eventNum,
+                                    "Post": userComment,
+                                    "username": username
+                                }
+                                json.dump(postObj,file)
+                            print(f"Your comment has been submitted to the Event Number {eventNum} forum")
+                            print()
+                        # read posts section
+                        readPost = input('Want to read posts made about an event? (y/n): ')
+                        if readPost == 'y':
+                            with open('events.txt', 'r', encoding='utf-8') as eventFile:
+                                eventData = json.load(eventFile)
+                            print()
+                            for eventName in eventData:
+                                eventDict = eventData[eventName]
+                                print('Event Number: ', eventDict['Event Number'])
+                                print('Event: ', eventDict['name'])
+                                print('Date:', eventDict['date'])
+                                print()
+                            readEventNum = input('Read posts about which event? (enter number): ')
+                            # make a read request
+                            with open('ForumReceive.txt','w',encoding='utf-8') as file:
+                                readReq = {
+                                    "Event Number": readEventNum,
+                                    "Read": "Read"
+                                }
+                                json.dump(readReq, file)
+                            time.sleep(3)
+                            # open and print received posts
+                            with open('ForumReceive.txt', 'r', encoding="utf-8") as Readfile:
+                                readObj = json.load(Readfile)
+                                if "N/A" not in readObj:
+                                    postObjs = readObj[readEventNum]
+                                    postCount = 0
+                                    for post in postObjs:
+                                        if postCount == 0:
+                                            eventName = post['Name']
+                                            eventDate = post['Date']
+                                            print(f'Below are comments regarding Event: {eventName} Date: {eventDate}')
+                                            print()
+                                            postCount += 1
+                                        print('User: ', post['username'])
+                                        print('Comment: ', post['Post'])
+                                        print()
+                                else:
+                                    print("Sorry there are no posts for this event yet")
+                        # ask to return to home page
+                        returnHome = input('Return to Home Page? (y/n): ')
+                        if returnHome == 'y':
+                            goHome = True
+
+
+
+
+
+
 
 
 

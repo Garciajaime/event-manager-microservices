@@ -1,4 +1,5 @@
 import json
+import time
 
 
 def findEvent(eventNum):
@@ -71,6 +72,7 @@ while True:
             with open('ForumReceive.txt','w',encoding='utf-8') as sendFile:
                 json.dump(eventPosts,sendFile,indent=4)
             # clear the text file of any requests
+            time.sleep(5)
             open('ForumReceive.txt', 'w').close()
             print('Post data has been sent...')
 
