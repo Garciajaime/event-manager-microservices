@@ -42,8 +42,13 @@ while True:
                     "Date": eventDate
 
                 }
-                # append post object to forum list object
-                forumData[eventNum] = postObj
+                # append post to post list if event posts already exist
+                if eventNum in forumData:
+                    postList = forumData[eventNum]
+                    postList.append(postObj)
+                else:
+                    # append post object to forum list object
+                    forumData[eventNum] = [postObj]
             # update the forum text file
             with open('ForumPosts.txt','w',encoding='utf-8') as postFile:
                 json.dump(forumData,postFile,indent=4)
@@ -57,17 +62,16 @@ while True:
             with open('ForumPosts.txt','r',encoding='utf-8') as forumFile:
                 forumData = json.load(forumFile)
                 eventPosts = {}
-                for numKey in forumData:
-                    forumObj = forumData[numKey]
-                    username = forumObj['username']
-                    userPost = forumObj['Post']
-                    if numKey == eventNum:
-                        eventPosts[username] = userPost
+                if eventNum in forumData:
+                    listOfPosts = forumData[eventNum]
+                    eventPosts[eventNum] = listOfPosts
+                else:
+                    eventPosts['N/A'] = 'This event has no posts'
             # send object via text file pipline
             with open('ForumReceive.txt','w',encoding='utf-8') as sendFile:
                 json.dump(eventPosts,sendFile,indent=4)
             # clear the text file of any requests
-            #open('ForumReceive.txt', 'w').close()
+            open('ForumReceive.txt', 'w').close()
             print('Post data has been sent...')
 
 
