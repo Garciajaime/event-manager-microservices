@@ -290,6 +290,45 @@ while True:
                         returnHome = input('Return to Home Page? (y/n): ')
                         if returnHome == 'y':
                             goHome = True
+                # enter job list page
+                enterJobList = input('Would you like to enter the job list page? (y/n): ')
+                if enterJobList == 'y':
+                    welcomeMessage = '''
+                    Hello, this is the Event Job List page. Here you can crete job listings
+                    for events you created or take on a job for any available listing.
+                    '''
+                    print(textwrap.dedent(welcomeMessage))
+
+                    postJob = input('Would you like to list a job for an event you created? (y/n): ')
+                    # print out all of a user's created events
+                    userEventNums = []
+                    with open('EventDelete.txt', 'r', encoding='utf-8') as file:
+                        eventObjs = json.load(file)
+                        print('Below are the events that you have created:')
+                        for event in eventObjs:
+                            currentNum = int(event)
+                            userEventNums.append(currentNum)  # create a list of a user's events
+                            currentEvent = eventObjs[event]
+                            print('Event Number: ', currentEvent['Event Number'])
+                            print('Event: ', currentEvent['name'])
+                            print('Date:', currentEvent['date'])
+                            print('Description: ', currentEvent['description'])
+                            print()
+                    eventNum = input('What event do you want to create a job listing for? (enter number):  ')
+                    userEventNums = str(userEventNums)
+                    while eventNum not in userEventNums:
+                        print('ERROR: The Event Number you have entered is invalid.')
+                        eventNum = input('Please enter the "Event Number" of the event you want to list a job about: ')
+                    jobTitle = input('Enter Job Title: ')
+                    print('Enter the Job Description below:')
+                    jobDesc = input()
+                    submitJob = input('Are you sure you want to create this job listing? (y/n): ')
+                    if submitJob == 'y':
+                        # create a request to post job
+
+
+
+
 
 
 
