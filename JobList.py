@@ -28,7 +28,7 @@ while True:
                     jobPostsObjs[eventNum] =  [jobPost] # create new list for jobs
             # post object to the forum
             with open('JobPosts.txt','w',encoding='utf-8') as postFile:
-                json.dump(jobPostsObjs,postFile)
+                json.dump(jobPostsObjs,postFile, indent=4)
             time.sleep(1)
             print("Job has been posted...")
             open('JobReceive.txt','w').close()  # clear file
