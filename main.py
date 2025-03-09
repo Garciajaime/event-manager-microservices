@@ -3,6 +3,21 @@ import textwrap
 import pprint
 import time
 
+def printAllEvents():
+    '''
+    Print out all stored events
+    :return: N/A
+    '''
+    with open('events.txt', 'r', encoding='utf-8') as eventFile:
+        eventData = json.load(eventFile)
+    print()
+    for eventName in eventData:
+        eventDict = eventData[eventName]
+        print('Event Number: ', eventDict['Event Number'])
+        print('Event: ', eventDict['name'])
+        print('Date:', eventDict['date'])
+        print()
+
 def getUserEvents(username):
     '''
     Gets all events created by a user and prints them
@@ -242,12 +257,7 @@ while True:
                             with open('events.txt', 'r', encoding='utf-8') as eventFile:
                                 eventData = json.load(eventFile)
                             print()
-                            for eventName in eventData:             # print out only name and date
-                                eventDict = eventData[eventName]
-                                print('Event Number: ', eventDict['Event Number'])
-                                print('Event: ', eventDict['name'])
-                                print('Date:', eventDict['date'])
-                                print()
+                            printAllEvents()
                             eventNum = input('Which event would you like to comment on? (enter number): ')
                             print('Go ahead a write a comment below: ')
                             print()
@@ -340,10 +350,30 @@ while True:
                                     }
                                     json.dump(reqObj,postJobFile,indent=4)
                                 print('You have successfully created a job listing.')
-                                # ask to return to home page
-                                returnHome = input('Return to Home Page? (y/n): ')
-                                if returnHome == 'y':
-                                    goHome = True
+                            readJobList = input('Do you want to see job listings for an event? (y/n): ')
+                            if readJobList == 'y':
+                                printAllEvents()
+                                eventNum = input('For which event would you like to read jobs about? (enter number): ')
+                                # make a read request
+                                with open('JobReceive.txt','w',encoding='utf-8') as reqFile:
+                                    reqObj = {
+                                        "Event Number": eventNum,
+                                        "Read": "Request Type"
+                                    }
+                                    json.dump(reqObj,reqFile)
+                                time.sleep(3)
+                                # print received object
+                                with open('JobReceive.txt','r',encoding='utf-8') as jobFile:
+                                    jobObj = json.load(jobFile)
+                                    jobList = jobObj[eventNum]
+                                    for job in jobList:
+                                        print('Job Title: ', post['Job Title'])
+                                        print('Job Description: ', post['Job Description'])
+                                        print()
+                            # ask to return to home page
+                            returnHome = input('Return to Home Page? (y/n): ')
+                            if returnHome == 'y':
+                                goHome = True
 
 
 
