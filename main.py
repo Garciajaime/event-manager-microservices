@@ -3,6 +3,40 @@ import textwrap
 import pprint
 import time
 
+def getUserEvents(username):
+    '''
+    Gets all events created by a user and prints them
+    :param username: ties events to this user
+    :return: all user event numbers
+    '''
+    # make a request for a users created events
+    with open('EventDelete.txt', 'w', encoding='utf-8') as delFile:
+        reqMessage = {
+            "Read": username
+        }
+        json.dump(reqMessage, delFile, indent=4)
+    time.sleep(3)
+    # print out all of a user's created events
+    userEventNums = []
+    with open('EventDelete.txt', 'r', encoding='utf-8') as file:
+        eventObjs = json.load(file)
+        viewEvents = input('Would you like to view all your events? (y/n): ')
+        if viewEvents == 'y':
+            viewEvents = True
+            print('Below are the events that you have created:')
+        for event in eventObjs:
+            currentNum = int(event)
+            userEventNums.append(currentNum)  # create a list of a user's events
+            currentEvent = eventObjs[event]
+            if viewEvents is True:
+                print('Event Number: ', currentEvent['Event Number'])
+                print('Event: ', currentEvent['name'])
+                print('Date:', currentEvent['date'])
+                print('Description: ', currentEvent['description'])
+                print()
+    return userEventNums
+
+
 while True:
     loginVerified = False
     login_input = input('Do you have a login? (y/n): ')
@@ -154,6 +188,8 @@ while True:
                         returnHome = input('Return to Home Page? (y/n): ')
                         if returnHome == 'y':
                             goHome = True
+                if goHome is True:
+                    continue
                 # enter the deletion/edit page
                 deleteEvent = input('Do you want to delete an event? (y/n): ')
                 if deleteEvent == 'y':
@@ -166,31 +202,8 @@ while True:
                         print(textwrap.dedent(openingMessage))
                         print()
                         print()
-                        # make a request for a users created events
-                        with open('EventDelete.txt','w',encoding='utf-8') as delFile:
-                            reqMessage = {
-                                "Read": username
-                            }
-                            json.dump(reqMessage,delFile,indent=4)
-                        time.sleep(3)
                         # print out all of a user's created events
-                        userEventNums = []
-                        with open('EventDelete.txt','r',encoding='utf-8') as file:
-                            eventObjs = json.load(file)
-                            viewEvents = input('Would you like to view all your events? (y/n): ')
-                            if viewEvents == 'y':
-                                viewEvents = True
-                                print('Below are the events that you have created:')
-                            for event in eventObjs:
-                                currentNum = int(event)
-                                userEventNums.append(currentNum)    # create a list of a user's events
-                                currentEvent = eventObjs[event]
-                                if viewEvents is True:
-                                    print('Event Number: ', currentEvent['Event Number'])
-                                    print('Event: ', currentEvent['name'])
-                                    print('Date:', currentEvent['date'])
-                                    print('Description: ', currentEvent['description'])
-                                    print()
+                        userEventNums = getUserEvents(username)
                         # Delete event section
                         requestDelete = input('Would you like to delete an Event? (y/n): ')
                         if requestDelete == 'y':
@@ -212,6 +225,8 @@ while True:
                         returnHome = input('Return to Home Page? (y/n): ')
                         if returnHome == 'y':
                             goHome = True
+                if goHome is True:
+                    continue
                 # enter the forum page
                 enterForum = input('Would you like to enter the Forum Page (y/n): ')
                 if enterForum == 'y':
@@ -290,41 +305,45 @@ while True:
                         returnHome = input('Return to Home Page? (y/n): ')
                         if returnHome == 'y':
                             goHome = True
+                if goHome is True:
+                    continue
                 # enter job list page
                 enterJobList = input('Would you like to enter the job list page? (y/n): ')
                 if enterJobList == 'y':
-                    welcomeMessage = '''
-                    Hello, this is the Event Job List page. Here you can crete job listings
-                    for events you created or take on a job for any available listing.
-                    '''
-                    print(textwrap.dedent(welcomeMessage))
+                    while goHome is False:
+                        welcomeMessage = '''
+                        Hello, this is the Event Job List page. Here you can crete job listings
+                        for events you created or take on a job for any available listing.
+                        '''
+                        print(textwrap.dedent(welcomeMessage))
 
-                    postJob = input('Would you like to list a job for an event you created? (y/n): ')
-                    # print out all of a user's created events
-                    userEventNums = []
-                    with open('EventDelete.txt', 'r', encoding='utf-8') as file:
-                        eventObjs = json.load(file)
-                        print('Below are the events that you have created:')
-                        for event in eventObjs:
-                            currentNum = int(event)
-                            userEventNums.append(currentNum)  # create a list of a user's events
-                            currentEvent = eventObjs[event]
-                            print('Event Number: ', currentEvent['Event Number'])
-                            print('Event: ', currentEvent['name'])
-                            print('Date:', currentEvent['date'])
-                            print('Description: ', currentEvent['description'])
-                            print()
-                    eventNum = input('What event do you want to create a job listing for? (enter number):  ')
-                    userEventNums = str(userEventNums)
-                    while eventNum not in userEventNums:
-                        print('ERROR: The Event Number you have entered is invalid.')
-                        eventNum = input('Please enter the "Event Number" of the event you want to list a job about: ')
-                    jobTitle = input('Enter Job Title: ')
-                    print('Enter the Job Description below:')
-                    jobDesc = input()
-                    submitJob = input('Are you sure you want to create this job listing? (y/n): ')
-                    if submitJob == 'y':
-                        # create a request to post job
+                        postJob = input('Would you like to list a job for an event you created? (y/n): ')
+                        if postJob == 'y':
+                            userEventNums = getUserEvents(username)
+                            eventNum = input('What event do you want to create a job listing for? (enter number):  ')
+                            userEventNums = str(userEventNums)
+                            while eventNum not in userEventNums:
+                                print('ERROR: The Event Number you have entered is invalid.')
+                                eventNum = input('Please enter the "Event Number" of the event you want to list a job about: ')
+                            jobTitle = input('Enter Job Title: ')
+                            print('Enter the Job Description below:')
+                            jobDesc = input()
+                            submitJob = input('Are you sure you want to create this job listing? (y/n): ')
+                            if submitJob == 'y':
+                                # create a request to post job
+                                with open('JobReceive.txt','w', encoding='utf-8') as postJobFile:
+                                    reqObj = {
+                                        "Job Title": jobTitle,
+                                        "Job Description": jobDesc,
+                                        "Event Number": eventNum,
+                                        "Post": "Request Type"
+                                    }
+                                    json.dump(reqObj,postJobFile,indent=4)
+                                print('You have successfully created a job listing.')
+                                # ask to return to home page
+                                returnHome = input('Return to Home Page? (y/n): ')
+                                if returnHome == 'y':
+                                    goHome = True
 
 
 
