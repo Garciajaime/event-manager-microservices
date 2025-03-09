@@ -32,4 +32,20 @@ while True:
             time.sleep(1)
             print("Job has been posted...")
             open('JobReceive.txt','w').close()  # clear file
+        if "Read" in requestMessage:
+            print("A read request has been made...")
+            eventNum = requestMessage["Event Number"]
+            with open('JobPosts.txt','r',encoding='utf-8') as readFile:
+                jobPostsObj = json.load(readFile)
+                postObj = {}
+                for key in jobPostsObj:
+                    if key == eventNum:
+                        jobList = jobPostsObj[key]
+                        postObj[eventNum] = jobList
+            time.sleep(3)
+            with open('JobReceive.txt','w',encoding='utf-8') as sendFile:
+                json.dump(postObj,sendFile,indent=4)
+            print("Your job list has been sent...")
+
+
 
