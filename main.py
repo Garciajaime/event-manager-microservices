@@ -205,7 +205,7 @@ while True:
                             goHome = True
                 if goHome is True:
                     continue
-                # enter the deletion/edit page
+                # enter the deletion
                 deleteEvent = input('Do you want to delete an event? (y/n): ')
                 if deleteEvent == 'y':
                     while goHome is False:
@@ -346,34 +346,50 @@ while True:
                                         "Job Title": jobTitle,
                                         "Job Description": jobDesc,
                                         "Event Number": eventNum,
+                                        "Availability": "Still Open",
                                         "Post": "Request Type"
                                     }
                                     json.dump(reqObj,postJobFile,indent=4)
                                 print('You have successfully created a job listing.')
-                            readJobList = input('Do you want to see job listings for an event? (y/n): ')
-                            if readJobList == 'y':
-                                printAllEvents()
-                                eventNum = input('For which event would you like to read jobs about? (enter number): ')
-                                # make a read request
-                                with open('JobReceive.txt','w',encoding='utf-8') as reqFile:
-                                    reqObj = {
-                                        "Event Number": eventNum,
-                                        "Read": "Request Type"
-                                    }
-                                    json.dump(reqObj,reqFile)
-                                time.sleep(3)
-                                # print received object
-                                with open('JobReceive.txt','r',encoding='utf-8') as jobFile:
-                                    jobObj = json.load(jobFile)
-                                    jobList = jobObj[eventNum]
-                                    for job in jobList:
-                                        print('Job Title: ', post['Job Title'])
-                                        print('Job Description: ', post['Job Description'])
-                                        print()
-                            # ask to return to home page
-                            returnHome = input('Return to Home Page? (y/n): ')
-                            if returnHome == 'y':
-                                goHome = True
+                        readJobList = input('Do you want to see job listings for an event? (y/n): ')
+                        if readJobList == 'y':
+                            printAllEvents()
+                            eventNum = input('For which event would you like to read jobs about? (enter number): ')
+                            # make a read request
+                            with open('JobReceive.txt','w',encoding='utf-8') as reqFile:
+                                reqObj = {
+                                    "Event Number": eventNum,
+                                    "Read": "Request Type"
+                                }
+                                json.dump(reqObj,reqFile)
+                            time.sleep(3)
+                            # print received object
+                            with open('JobReceive.txt','r',encoding='utf-8') as jobFile:
+                                jobObj = json.load(jobFile)
+                                jobList = jobObj[eventNum]
+                                for job in jobList:
+                                    print('Job Title: ', post['Job Title'])
+                                    print('Job Description: ', post['Job Description'])
+                                    print('Availability: ', post['Availability'])
+                                    print()
+                        takeJob = input('Want to take on any of listed jobs?')
+                        if takeJob == 'y':
+                            print('Check to see if a job is available and then...')
+                            reqJobTitle = input('Enter the Job Title of the job you want to take: ')
+                            # make a request to take a job
+                            with open('JobReceive.txt', 'w', encoding='utf-8') as jobReq:
+                                takeJobObj = {
+                                    "Job Title": reqJobTitle,
+                                    "Event Number": eventNum,
+                                    "username": username,
+                                    "Take Job": "Request Type"
+                                }
+                                json.dump(takeJobObj,jobReq,indent=4)
+                            print('Congrats you have officially taken this job!')
+                        # ask to return to home page
+                        returnHome = input('Return to Home Page? (y/n): ')
+                        if returnHome == 'y':
+                            goHome = True
 
 
 
