@@ -33,10 +33,10 @@ if __name__ == '__main__':
                 with open("holiday-note.txt", "w") as file:
                     file.write(
                         f"Yes\n{event_date} is a holiday: {us_holidays[event_date]}")
-                time.sleep(5)
+                time.sleep(6)
                 # clear files
                 open('personal-calendar.txt','w').close()
-                open('holiday-note.txt','w').close()
+                #open('holiday-note.txt','w').close()
 
             else:
                 print(f"{event_date} is not a holiday")

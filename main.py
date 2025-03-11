@@ -165,8 +165,10 @@ while True:
                         with open('personal-calendar.txt','w',encoding='utf-8') as holFile:
                             holFile.write(event_date)
                         time.sleep(3)
+                        print('Your event has been submitted!')
+                        print()
                         with open('holiday-note.txt','r',encoding='utf-8') as readHol:
-                            if readHol.readline().strip() == 'yes':
+                            if readHol.readline().strip() == 'Yes':
                                 print()
                                 print('Note: ',readHol.readline())
                     # ask to return to home page
