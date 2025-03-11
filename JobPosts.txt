@@ -1,0 +1,38 @@
+{
+    "2": [
+        {
+            "Job Title": "Organizer",
+            "Job Description": "Will help organize event",
+            "Availability": "Taken by user: John"
+        },
+        {
+            "Job Title": "Photographer",
+            "Job Description": "Responsible for taking event pictures",
+            "Availability": "Available"
+        }
+    ],
+    "5": [
+        {
+            "Job Title": "Stage Crew",
+            "Job Description": "Will help set up stage equipment",
+            "Availability": "Taken by user: Abigail"
+        },
+        {
+            "Job Title": "Security",
+            "Job Description": "Will manage event security",
+            "Availability": "Available"
+        }
+    ],
+    "7": [
+        {
+            "Job Title": "Announcer",
+            "Job Description": "Will commentate the race",
+            "Availability": "Taken by user: Robert"
+        },
+        {
+            "Job Title": "First Aid Staff",
+            "Job Description": "Provide medical support if needed",
+            "Availability": "Available"
+        }
+    ]
+}

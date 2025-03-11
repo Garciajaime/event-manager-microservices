@@ -1,0 +1,51 @@
+{
+    "1": {
+        "name": "Concert",
+        "date": "2026-07-10",
+        "description": "Rock concert",
+        "username": "Robert",
+        "Event Number": 1
+    },
+    "2": {
+        "name": "Movie in the Park",
+        "date": "2025-07-15",
+        "description": "Shrek 5",
+        "username": "Abigail",
+        "Event Number": 2
+    },
+    "3": {
+        "name": "Eating Contest",
+        "date": "2026-07-20",
+        "description": "Eating bowls of yakisoba",
+        "username": "Kevin",
+        "Event Number": 3
+    },
+    "4": {
+        "name": "Marathon",
+        "date": "2025-08-15",
+        "description": "5k",
+        "username": "John",
+        "Event Number": 4
+    },
+    "5": {
+        "name": "Concert",
+        "date": "2025-10-25",
+        "description": "Guns-N-Roses will be playing at the MegaDome",
+        "username": "Carl",
+        "Event Number": 5
+    },
+    "6": {
+        "name": "Eating Contest",
+        "date": "2025-05-01",
+        "description": "Eating Pies",
+        "username": "John",
+        "Event Number": 6
+    },
+    "7": {
+        "name": "Racing",
+        "date": "2025-05-20",
+        "description": "Will race on Walla Walla Speedway",
+        "username": "John",
+        "Event Number": 7
+    }
+}

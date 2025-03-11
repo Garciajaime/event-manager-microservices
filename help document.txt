@@ -1,0 +1,48 @@
+
+
+Help Document on how to use Walla Walla,WA Event App
+
+Creating an event
+Step 1: Enter letter 'y' at the create event prompt
+Step 2: Enter letter 'y' if you would like to use an event from the set list
+Step 3: If you entered 'y' in step 2 you will see a list of numbered events.
+        Enter the number corresponding to the event you would like to create.
+        Skip to step 6
+Step 4: Referring to step 2 enter 'n' if you would like to create custom event
+Step 5: Enter the name of your event
+Step 6: Enter the date of the event you wish to create
+Step 7: Enter a description of your event
+Step 8: Confirm if you would like to create this event by entering 'y' or 'n'
+Step 9: Enter 'y' at the return home prompt if you would like to return home
+
+View Events from list
+Step 1: Enter 'n' at the create event prompt
+Step 2: Enter 'y' at the view event prompt
+Step 3: If you would like to see only the name and date of events enter 'y' then skip to step 6
+Step 4: If you would not like to see just name/date enter 'n' at step 3
+Step 5: Enter 'y' if you would like to see the events full details
+Step 6: Enter 'y' at the return home prompt if you would like to return home
+
+Delete Event you created
+Step 1: Enter Delete Page
+Step 2: Follow Prompts and enter Event Number of event you want to Delete
+Step 3: You should receive a confirmation message
+
+Forum Page
+Step 1: Enter 'y' at Forum Page Prompt
+Step 2: Enter 'y' when prompted to post
+Step 3: Enter event number you want to make a post about
+Step 4: You should receieve a confirmation message
+Step 5: If you want to read posts enter 'y' at read posts prompt
+Step 6: A list of posts made about event should then be displayed
+
+Job List Page
+Step 1: Enter 'y' at the Job List Page prompt
+Step 2: Enter 'y' when prompted to post a job if you want to post a job
+Step 3: Enter Job Title and Job Description when prompted
+Step 4: You should then receive a confirmation message
+Step 5: if you want to read job listing enter 'y' at read job list prompt
+Step 6: A list of all jobs for event should then be displayed
+Step 7: Enter 'y' at take job prompt if you want to take on a job
+Step 8: Enter the Job Title of the job you want to take
+Step 9: You should then receive a confirmation message
