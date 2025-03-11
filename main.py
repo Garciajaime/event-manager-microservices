@@ -133,7 +133,7 @@ while True:
                     if template_event_response == 'n':              # create custom event
                         chosen_event = input('What type of event will this be?: ')
                     # enter event details
-                    event_date = input('When will the event be? (enter date): ')
+                    event_date = input('When will the event be? (YYYY-MM-DD): ')
                     print('Please add a description:')
                     event_description = input()
                     # create event object
@@ -161,6 +161,14 @@ while True:
                             eventData[eventNum] = eventObj          # event number is key
                         with open('events.txt','w',encoding='utf-8') as eventFile:
                             json.dump(eventData,eventFile,indent=4)
+                        # notify user if event falls on holiday
+                        with open('personal-calendar.txt','w',encoding='utf-8') as holFile:
+                            holFile.write(event_date)
+                        time.sleep(3)
+                        with open('holiday-note.txt','r',encoding='utf-8') as readHol:
+                            if readHol.readline().strip() == 'yes':
+                                print()
+                                print('Note: ',readHol.readline())
                     # ask to return to home page
                     returnHome = input('Return to Home Page? (y/n): ')
                     if returnHome == 'y':
@@ -355,6 +363,8 @@ while True:
                         if readJobList == 'y':
                             printAllEvents()
                             eventNum = input('For which event would you like to read jobs about? (enter number): ')
+                            print('Below are all jobs for the selected event:')
+                            print()
                             # make a read request
                             with open('JobReceive.txt','w',encoding='utf-8') as reqFile:
                                 reqObj = {
@@ -362,30 +372,29 @@ while True:
                                     "Read": "Request Type"
                                 }
                                 json.dump(reqObj,reqFile)
-                            time.sleep(3)
+                            time.sleep(5)
                             # print received object
                             with open('JobReceive.txt','r',encoding='utf-8') as jobFile:
                                 jobObj = json.load(jobFile)
                                 jobList = jobObj[eventNum]
                                 for job in jobList:
-                                    print('Job Title: ', post['Job Title'])
-                                    print('Job Description: ', post['Job Description'])
-                                    print('Availability: ', post['Availability'])
+                                    print('Job Title: ', job['Job Title'])
+                                    print('Job Description: ', job['Job Description'])
+                                    print('Availability: ', job['Availability'])
                                     print()
-                        takeJob = input('Want to take on any of listed jobs?')
-                        if takeJob == 'y':
-                            print('Check to see if a job is available and then...')
-                            reqJobTitle = input('Enter the Job Title of the job you want to take: ')
-                            # make a request to take a job
-                            with open('JobReceive.txt', 'w', encoding='utf-8') as jobReq:
-                                takeJobObj = {
-                                    "Job Title": reqJobTitle,
-                                    "Event Number": eventNum,
-                                    "username": username,
-                                    "Take Job": "Request Type"
-                                }
-                                json.dump(takeJobObj,jobReq,indent=4)
-                            print('Congrats you have officially taken this job!')
+                            takeJob = input('Want to take on any of listed jobs? (y/n): ')
+                            if takeJob == 'y':
+                                reqJobTitle = input('Enter the Job Title of an available job you want to take: ')
+                                # make a request to take a job
+                                with open('JobReceive.txt', 'w', encoding='utf-8') as jobReq:
+                                    takeJobObj = {
+                                        "Job Title": reqJobTitle,
+                                        "Event Number": eventNum,
+                                        "username": username,
+                                        "Take Job": "Request Type"
+                                    }
+                                    json.dump(takeJobObj,jobReq,indent=4)
+                                print('Congrats you have officially taken this job!')
                         # ask to return to home page
                         returnHome = input('Return to Home Page? (y/n): ')
                         if returnHome == 'y':
