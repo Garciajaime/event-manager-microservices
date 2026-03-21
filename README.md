@@ -43,7 +43,7 @@ Developed a modular system that separates core functionality into independent se
 ```
 bash
 git clone https://github.com/Garciajaime/CS-361-Main-Project.git
-cd CS-361-Main-Project
+cd event-manager-microservices
 # In sepereate terminals
 python Holiday.py
 python Delete.py
