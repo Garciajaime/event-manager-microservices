@@ -65,3 +65,4 @@ Includes a video walkthrough demonstrating full system functionality and archite
 ## 👨‍💻 Author
 
 Abraham Garcia
+Computer Science Student
